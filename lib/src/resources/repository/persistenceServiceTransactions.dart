@@ -5,12 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersistenceServiceTransactions {
-
-  CollectionReference transactions = FirebaseFirestore.instance.collection('transacoes');
+  CollectionReference transactions =
+      FirebaseFirestore.instance.collection('transacoes');
 
   Future<bool> adicionarTransacao(TransactionUsers transaction) async {
-    Usuario novoUsuario = await persistenceServiceUsers.findUsersByCpf(transaction.user.cpf).then((
-        value) => value);
+    Usuario novoUsuario = await persistenceServiceUsers
+        .findUsersByCpf(transaction.user.cpf)
+        .then((value) => value);
     try {
       if (novoUsuario == null) {
         //retorno falso, pois já tem um usuário cadastrado
@@ -21,7 +22,7 @@ class PersistenceServiceTransactions {
           .add(transaction.toMap())
           .then((a) => print('persistion line: 22\nSalvei o usuario'))
           .catchError(
-            (error) {
+        (error) {
           print('persistion line: 24\nError: $error');
           return false;
         },
@@ -36,7 +37,8 @@ class PersistenceServiceTransactions {
   Future<List<TransactionUsers>> findTransactionsCurrentUser() async {
     List<TransactionUsers> transactionsUsers = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Usuario usuario = await persistenceServiceUsers.findUsersByCpf(prefs.getString("cpf"));
+    Usuario usuario =
+        await persistenceServiceUsers.findUsersByCpf(prefs.getString("cpf"));
 
     await transactions.get().then((QuerySnapshot query) {
       query.docs.forEach((transaction) {
@@ -51,8 +53,10 @@ class PersistenceServiceTransactions {
 
 //reflexão, getx, provider
   TransactionUsers unMap(Map<String, dynamic> transaction, Usuario user) {
-    return TransactionUsers(transaction['name'], transaction['photo'], transaction['date'], transaction['value'], user);
+    return TransactionUsers(transaction['name'], transaction['photo'],
+        transaction['date'], transaction['value'], user);
   }
-
 }
-PersistenceServiceTransactions persistenceServiceTransactions = PersistenceServiceTransactions();
+
+PersistenceServiceTransactions persistenceServiceTransactions =
+    PersistenceServiceTransactions();

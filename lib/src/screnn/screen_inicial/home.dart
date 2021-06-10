@@ -1,14 +1,14 @@
-import 'package:alfa_banck/src/components/JanelaComprar.dart';
+import 'package:alfa_banck/src/components/cadastrarCompra.dart';
 import 'package:alfa_banck/src/modules/cartao.dart';
 import 'package:alfa_banck/src/resources/repository.dart';
 import 'package:alfa_banck/src/resources/repository/persistenceServiceCards.dart';
 import 'package:alfa_banck/src/screnn/cartao_screen/Home_cartao.dart';
+import 'package:alfa_banck/src/screnn/tela_inicial.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../screen_transfer.dart';
 import '../screen_user_detail.dart';
 import 'card_component.dart';
 import 'stack_container.dart';
@@ -42,21 +42,6 @@ class Perfil extends StatelessWidget {
                 children: [
                   StackContainer(),
                   CardItem('Saldo', Colors.black, '250.00', () {}),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CardItem(
-                    'Nova transferência',
-                    Colors.black,
-                    '',
-                    () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FormularioTransferencia()),
-                      );
-                    },
-                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -102,12 +87,24 @@ class Perfil extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 20,
-                  )
+                  ),
+                  CardItem(
+                    'Logout',
+                    Colors.black,
+                    'Deseja Sair? ${snapshot.data.displayName}?',
+                        () {
+                      repository.signOut();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TelaInicial()),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
-          ) : Center(child: CircularProgressIndicator(backgroundColor: Colors.red,
-            strokeWidth: 5,));
+          ) : Center(child: CircularProgressIndicator(backgroundColor: Colors.red, strokeWidth: 5,));
         });
   }
 }

@@ -97,9 +97,6 @@ class Login extends StatelessWidget {
     Usuario u = await persistenceServiceUsers.findUsersByCpf(cpf);
     await repository.loginComCpfAndSenha(u, u.email, password)
         .then((value) => retorno = value);
-
-    Cartao card = new Cartao(u, "**** **** **** 1425", "03-01-2023", "assets/images/mastercard_logo.png", 0xFF1E1E99, "assets/svg/ellipse_top_pink.svg", "assets/svg/ellipse_bottom_pink.svg", "R\$ 12.000,00", "R\$ 300,00", "R\$ 11.700,00");
-    persistenceServiceCards.adicionarCard(card);
     return usuarioAutenticado(retorno);
   }
 

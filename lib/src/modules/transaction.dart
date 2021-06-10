@@ -10,7 +10,6 @@ class TransactionUsers {
 
   TransactionUsers(this.name, this.photo, this.date, this.value, this.user);
 
-
   @override
   String toString() {
     return "Transations(Name: $name, photo: $photo, date: $date, value: $value)";

@@ -1,4 +1,4 @@
-import 'package:alfa_banck/src/components/JanelaComprar.dart';
+import 'package:alfa_banck/src/components/cadastrarCompra.dart';
 import 'package:alfa_banck/src/root_page.dart';
 import 'package:alfa_banck/src/screnn/cartao_screen/Home_cartao.dart';
 import 'package:alfa_banck/src/screnn/login.dart';

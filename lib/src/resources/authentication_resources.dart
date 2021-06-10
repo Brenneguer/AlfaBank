@@ -48,6 +48,8 @@ class AuthenticationResources {
       prefs.setString("uid", _firebaseAuth.currentUser.uid);
       prefs.setString("email", _firebaseAuth.currentUser.email);
       prefs.setString("cpf", usuario.cpf);
+      prefs.setString("telefone", usuario.telefone);
+      prefs.setString("nome", usuario.nome);
       return 1;
     } on PlatformException catch (e) {
       print(
@@ -61,6 +63,8 @@ class AuthenticationResources {
   }
 
   Future<void> get sair async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
     _firebaseAuth.signOut();
   }
 

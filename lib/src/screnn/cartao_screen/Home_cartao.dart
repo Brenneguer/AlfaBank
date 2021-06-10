@@ -34,6 +34,7 @@ class _HomeCartaoState extends State<HomeCartao> {
     }
     return result;
   }
+
   @override
   void initState() {
     user = new Usuario("", "", "", "", "");
@@ -45,7 +46,9 @@ class _HomeCartaoState extends State<HomeCartao> {
 
   void _initUserAndCard() async {
     String email;
-    _currentUser.listen((event) { email = event.email; });
+    _currentUser.listen((event) {
+      email = event.email;
+    });
     this.user = await persistenceServiceUsers.findUsersByEmail(email);
     card = persistenceServiceCards.findCardByCpf(user.cpf).asStream();
     super.setState(() {
@@ -55,12 +58,15 @@ class _HomeCartaoState extends State<HomeCartao> {
   }
 
   void _initTransations() async {
-    _transactions = persistenceServiceTransactions.findTransactionsCurrentUser().asStream();
-    transacoes = await persistenceServiceTransactions.findTransactionsCurrentUser();
+    _transactions =
+        persistenceServiceTransactions.findTransactionsCurrentUser().asStream();
+    transacoes =
+        await persistenceServiceTransactions.findTransactionsCurrentUser();
     setState(() {
       transacoes = transacoes;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +95,7 @@ class _HomeCartaoState extends State<HomeCartao> {
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
                               image:
-                              AssetImage('assets/images/user_image.png'))),
+                                  AssetImage('assets/images/user_image.png'))),
                     )
                   ],
                 ),
@@ -109,7 +115,7 @@ class _HomeCartaoState extends State<HomeCartao> {
                     Text(
                       user.nome,
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -122,12 +128,14 @@ class _HomeCartaoState extends State<HomeCartao> {
                   // itemCount: cards.length,
                   itemCount: 1,
                   itemBuilder: (context, index) {
-                    return StreamBuilder<Cartao> (
-                      stream: card,
-                      builder: (BuildContext context, AsyncSnapshot<Cartao> snapshot) {
-                        return snapshot.hasData ? cardComponent(index, snapshot.data) : Center(child: CircularProgressIndicator());
-                      }
-                    );
+                    return StreamBuilder<Cartao>(
+                        stream: card,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Cartao> snapshot) {
+                          return snapshot.hasData
+                              ? cardComponent(index, snapshot.data)
+                              : Center(child: CircularProgressIndicator());
+                        });
                   },
                 ),
               ),
@@ -140,12 +148,12 @@ class _HomeCartaoState extends State<HomeCartao> {
                     Text(
                       "Operações",
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                     Row(
                       children: map<Widget>(
                         datas,
-                            (index, select) {
+                        (index, select) {
                           return Container(
                             alignment: Alignment.centerLeft,
                             height: 9,
@@ -175,7 +183,6 @@ class _HomeCartaoState extends State<HomeCartao> {
                         setState(() {
                           current = index;
                         });
-
                       },
                       child: OperationCard(
                           operation: datas[index].name,
@@ -197,80 +204,97 @@ class _HomeCartaoState extends State<HomeCartao> {
                     Text(
                       "Histórico",
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
               ),
-              StreamBuilder<List<TransactionUsers>>(
-                stream: _transactions,
-                builder: (BuildContext context, AsyncSnapshot<List<TransactionUsers>> asyncSnapshot) {
-                    return asyncSnapshot.hasData ?
-                    ListView.builder(
-                      itemCount: transacoes.length,
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          height: 76,
-                          margin: EdgeInsets.only(bottom: 13),
-                          padding: EdgeInsets.only(
-                              left: 24, top: 12, bottom: 12, right: 22),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 10,
-                                  spreadRadius: 5,
-                                  offset: Offset(8.0, 8.0))
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 57,
-                                    width: 57,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: AssetImage(transacoes[index].photo),
-                                      ),
+              Container(
+                height: 200,
+                child: StreamBuilder<List<TransactionUsers>>(
+                  stream: _transactions,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<TransactionUsers>> asyncSnapshot) {
+                    return asyncSnapshot.hasData
+                        ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: transacoes.length,
+                            padding: EdgeInsets.only(left: 20, bottom: 20, top: 20),
+                            shrinkWrap: true,
+
+                            itemBuilder: (context, index) {
+                              return Container(
+                                height: 30,
+                                width: 350,
+                                margin: EdgeInsets.only(right: 30),
+                                padding: EdgeInsets.only(
+                                    left: 30, top: 12, bottom: 12, right:10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                        spreadRadius: 5,
+                                        offset: Offset(8.0, 8.0))
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 57,
+                                          width: 57,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  transacoes[index].photo),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              transacoes[index].name,
+                                              style: TextStyle(
+                                                  fontSize: 20, color: Colors.black
+                                              ),
+                                            ),
+                                            Text(UtilData.obterDataDDMMAAAA(
+                                                transacoes[index].date.toDate()))
+                                          ],
+                                        )
+                                      ],
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 13,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(transacoes[index].name),
-                                      Text(UtilData.obterDataDDMMAAAA(transacoes[index].date.toDate()))
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    transacoes[index].value,
-                                    style:
-                                    TextStyle(fontSize: 20, color: Colors.blue),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                        : Center(child: CircularProgressIndicator(backgroundColor: Colors.red,));
-                },
+                                    Row(
+                                      children: [
+                                        Text(
+                                          transacoes[index].value,
+                                          style: TextStyle(
+                                              fontSize: 20, color: Colors.blue),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(
+                            backgroundColor: Colors.red,
+                          ));
+                  },
+                ),
               ),
             ],
           ),
@@ -281,140 +305,134 @@ class _HomeCartaoState extends State<HomeCartao> {
 
   Container cardComponent(int index, Cartao card) {
     return Container(
-                    margin: EdgeInsets.only(right: 10),
-                    height: 199,
-                    width: 376,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(28),
-                      color: Color(card.cardBackground),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          child:
-                          SvgPicture.asset(card.cardElementTop),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: SvgPicture.asset(
-                              card.cardElementBottom),
-                        ),
-                        Positioned(
-                          left: 29,
-                          top: 48,
-                          child: Text(
-                            'CARD NUMBER',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          left: 29,
-                          top: 48,
-                          child: Text(
-                            'CARD NUMBER',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          left: 29,
-                          top: 65,
-                          child: Text(
-                            card.cardNumber,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          right: 21,
-                          top: 15,
-                          child: Image.asset(card.cardType),
-                          width: 40,
-                          height: 40,
-                        ),
-                        Positioned(
-                          left: 29,
-                          bottom: 80,
-                          child: Text(
-                            "Cliente",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          left: 29,
-                          bottom: 60,
-                          child: Text(
-                            card.user.nome,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        Positioned(
-                          left: 29,
-                          bottom: 30,
-                          child: Text(
-                            "Limite Total",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          left: 29,
-                          bottom: 10,
-                          child: Text(
-                            card.cardLimit,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        Positioned(
-                          left: 250,
-                          bottom: 80,
-                          child: Text(
-                            "Validade",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          left: 250,
-                          bottom: 60,
-                          child: Text(
-                            card.cardExpired,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        Positioned(
-                          left: 250,
-                          bottom: 30,
-                          child: Text(
-                            "Limite Disponível",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          left: 250,
-                          bottom: 10,
-                          child: Text(
-                            card.limiteAtual,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
+      margin: EdgeInsets.only(right: 10),
+      height: 199,
+      width: 376,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        color: Color(card.cardBackground),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            child: SvgPicture.asset(card.cardElementTop),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: SvgPicture.asset(card.cardElementBottom),
+          ),
+          Positioned(
+            left: 29,
+            top: 48,
+            child: Text(
+              'CARD NUMBER',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white),
+            ),
+          ),
+          Positioned(
+            left: 29,
+            top: 48,
+            child: Text(
+              'CARD NUMBER',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white),
+            ),
+          ),
+          Positioned(
+            left: 29,
+            top: 65,
+            child: Text(
+              card.cardNumber,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
+            ),
+          ),
+          Positioned(
+            right: 21,
+            top: 15,
+            child: Image.asset(card.cardType),
+            width: 40,
+            height: 40,
+          ),
+          Positioned(
+            left: 29,
+            bottom: 80,
+            child: Text(
+              "Cliente",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Positioned(
+            left: 29,
+            bottom: 60,
+            child: Text(
+              card.user.nome,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+            ),
+          ),
+          Positioned(
+            left: 29,
+            bottom: 30,
+            child: Text(
+              "Limite Total",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Positioned(
+            left: 29,
+            bottom: 10,
+            child: Text(
+              card.cardLimit,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+            ),
+          ),
+          Positioned(
+            left: 250,
+            bottom: 80,
+            child: Text(
+              "Validade",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Positioned(
+            left: 250,
+            bottom: 60,
+            child: Text(
+              card.cardExpired,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+            ),
+          ),
+          Positioned(
+            left: 250,
+            bottom: 30,
+            child: Text(
+              "Limite Disponível",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Positioned(
+            left: 250,
+            bottom: 10,
+            child: Text(
+              card.limiteAtual,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -427,13 +445,11 @@ class OperationCard extends StatefulWidget {
   _HomeCartaoState context;
 
   OperationCard(
-      {
-        this.operation,
-        this.selectedIcon,
-        this.unselectedIcon,
-        this.isSelected,
-        this.context
-      });
+      {this.operation,
+      this.selectedIcon,
+      this.unselectedIcon,
+      this.isSelected,
+      this.context});
 
   @override
   _OperationCardState createState() => _OperationCardState();
@@ -478,4 +494,3 @@ class _OperationCardState extends State<OperationCard> {
     );
   }
 }
-
