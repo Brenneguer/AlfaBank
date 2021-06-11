@@ -420,7 +420,7 @@ class _ComprarCartaoState extends State<CompraCartao> {
             left: 250,
             bottom: 30,
             child: Text(
-              "Limite",
+              "Limite Disponível",
               style: TextStyle(color: Colors.white),
             ),
           ),
